@@ -1,6 +1,6 @@
 class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
-  include LocationsHelper
+  include ApplicationHelper
   # GET /locations
   # GET /locations.json
   def index
@@ -10,14 +10,14 @@ class LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
-    @buses = HTTParty.get("http://developer.itsmarta.com/BRDRestService/RestBusRealTimeService/GetAllBus")
+    @buses = HTTParty.get('http://developer.itsmarta.com/BRDRestService/RestBusRealTimeService/GetAllBus')
 
     @bus_count = 0
 
     @nearby_buses = []
 
     @buses.each do |bus|
-      if nearby(@location.longitude, @location.latitude, bus['LONGITUDE'].to_f, bus["LITITUDE"].to_f)
+      if nearby(@location.longitude, @location.latitude, bus["LONGITUDE"].to_f, bus["LATITUDE"].to_f)
         @bus_count += 1
         @nearby_buses.push(bus)
       end

@@ -4,14 +4,16 @@
 
 <p><%= @location.full_street_address %></p>
 
-<h3>The closest busses are ...</h3>
+<h3>The closest buses are ...</h3>
 
 <% if @bus_count == 0 %>
-<p>There are no busses around you. Consider Lyft or Uber. </p>
-<% else %>
-  <strong>Route</strong>: <%= bus["ROUTE"] %><br>
-  <strong>Vehicle</strong>: <%= bus["VEHICLE"] %><br>
-  <strong>Next Stop</strong>: <%= bus["TIMEPOINT"] %><br>
+<p>There are no buses around you. Consider Lyft or Uber. </p>
+<% end %>
+
+  <% @nearby_buses.each do |bus| %>
+  <strong>Route</strong>: <%= bus["ROUTE"] %><br />
+  <strong>Vehicle</strong>: <%= bus["VEHICLE"] %><br />
+  <strong>Next Stop</strong>: <%= bus["TIMEPOINT"] %><br />
 
 <% end %>
 <p>
@@ -24,16 +26,13 @@
   <%= @location.longitude %>
 </p>
 
-<p>
-  <strong>Address:</strong>
-  <%= @location.address %>
-</p>
-
-<p>
-  <strong>City:</strong>
-  <%= @location.city %>
-</p>
 
 
 <%= link_to 'Actually, i\'m at...', edit_location_path(@location) %> |
 <%= link_to 'Back', locations_path %>
+
+<div id="map-canvas">
+  <div style='width: 800px;'>
+    <div id="map" style='width: 800px; height: 400px;'></div>
+  </div>
+</div>
