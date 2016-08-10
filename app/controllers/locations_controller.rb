@@ -1,6 +1,6 @@
 class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
-  include ApplicationHelper
+  include LocationsHelper
   # GET /locations
   # GET /locations.json
   def index
@@ -18,7 +18,7 @@ class LocationsController < ApplicationController
 
     @buses.each do |bus|
       if nearby(@location.longitude, @location.latitude, bus['LONGITUDE'].to_f, bus["LITITUDE"].to_f)
-        bus_count += 1
+        @bus_count += 1
         @nearby_buses.push(bus)
       end
     end
