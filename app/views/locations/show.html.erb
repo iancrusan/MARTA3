@@ -10,29 +10,53 @@
 <p>There are no buses around you. Consider Lyft or Uber. </p>
 <% end %>
 
-  <% @nearby_buses.each do |bus| %>
+  <!-- <% @nearby_buses.each do |bus| %>
   <strong>Route</strong>: <%= bus["ROUTE"] %><br />
   <strong>Vehicle</strong>: <%= bus["VEHICLE"] %><br />
   <strong>Next Stop</strong>: <%= bus["TIMEPOINT"] %><br />
 
+<% end %> -->
+<% @nearby_buses.each_with_index do |bus, index| %>
+<p>
+  <strong>Route</strong>: <%= bus["ROUTE"] %><br />
+  <strong>Vehicle</strong>: <%= bus["VEHICLE"] %><br />
+  <strong>Next Stop</strong>: <%= bus["TIMEPOINT"] %><br />
+</p>
+<script>
+  function initialize() {
+    var myLatlng = new google.maps.LatLng(<%= @location.latitude %>, <%= @location.longitude %>);
+    var busLatlng = new google.maps.LatLng(<%= bus["LATITUDE"]%>, <%= bus["LONGITUDE"] %>);
+
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 13
+  };
+
+    var map = new google.maps.Map(document.getElementById('map-canvas<%= index %>'),
+     mapOptions);
+
+    var contentString = "<img src='http://www.motorbussociety.org/conventn/01spr/MARTA%203163.jpg' style='width:50px;height:50px;'/>";
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    var marker = new google.maps.Marker({
+      position: busLatlng,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: 'Hello World!'
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<div class="bus-map" id="map-canvas<%= index %>"></div>
+
 <% end %>
-<p>
-  <strong>Latitude:</strong>
-  <%= @location.latitude %>
-</p>
-
-<p>
-  <strong>Longitude:</strong>
-  <%= @location.longitude %>
-</p>
-
-
-
 <%= link_to 'Actually, i\'m at...', edit_location_path(@location) %> |
 <%= link_to 'Back', locations_path %>
-
-<div id="map-canvas">
-  <div style='width: 800px;'>
-    <div id="map" style='width: 800px; height: 400px;'></div>
-  </div>
-</div>
