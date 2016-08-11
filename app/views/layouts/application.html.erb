@@ -2,20 +2,30 @@
 <html>
 <head>
   <title>MARTA</title>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' =>
-  true %>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['AIzaSyB_ZDCqyHPUQGJTijRG02JpySbrNyjmyUs'] %>">
-  </script>
-
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-
+  <style>
+     #map {
+      width: 100%;
+      height: 400px;
+    }
+  </style>
 </head>
-<body>
+  <body>
+    <h3>MARTA</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var mapDiv = document.getElementById('map');
+        var map = new google.maps.Map(mapDiv, {
+            center: { lat: 33.755797, lng: -84.388789},
+            zoom: 8
+        });
+      }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['AIzaSyDXVfauVTeje8JX9fmoUnmYf9Qk4N5MmRg']%>&callback=initMap">
+    </script>
 
   <div class="container">
     <%= yield %>
